@@ -1,6 +1,7 @@
 /*
  * The MIT License (MIT)
  *
+ * Copyright (c) 2023 Architectury
  * Copyright (c) 2018 Minecrell (https://github.com/Minecrell)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
