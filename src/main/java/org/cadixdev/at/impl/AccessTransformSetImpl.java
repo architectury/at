@@ -25,8 +25,8 @@
 
 package org.cadixdev.at.impl;
 
+import net.fabricmc.mappingio.tree.MappingTreeView;
 import org.cadixdev.at.AccessTransformSet;
-import org.cadixdev.lorenz.MappingSet;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -62,8 +62,8 @@ public class AccessTransformSetImpl implements AccessTransformSet {
     }
 
     @Override
-    public AccessTransformSet remap(MappingSet mappings) {
-        return AccessTransformSetMapper.remap(this, mappings);
+    public AccessTransformSet remap(MappingTreeView mappings, String from, String to) {
+        return AccessTransformSetMapper.remap(this, mappings, from, to);
     }
 
     @Override

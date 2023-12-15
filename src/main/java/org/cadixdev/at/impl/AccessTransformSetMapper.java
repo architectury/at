@@ -25,13 +25,10 @@
 
 package org.cadixdev.at.impl;
 
+import net.fabricmc.mappingio.tree.MappingTreeView;
 import org.cadixdev.at.AccessTransformSet;
+import org.cadixdev.bombe.type.MethodDescriptor;
 import org.cadixdev.bombe.type.signature.MethodSignature;
-import org.cadixdev.lorenz.MappingSet;
-import org.cadixdev.lorenz.model.ClassMapping;
-import org.cadixdev.lorenz.model.FieldMapping;
-import org.cadixdev.lorenz.model.Mapping;
-import org.cadixdev.lorenz.model.MethodMapping;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -41,19 +38,29 @@ final class AccessTransformSetMapper {
     private AccessTransformSetMapper() {
     }
 
-    static AccessTransformSet remap(AccessTransformSet set, MappingSet mappings) {
+    static AccessTransformSet remap(AccessTransformSet set, MappingTreeView mappings, String from, String to) {
         Objects.requireNonNull(set, "set");
         Objects.requireNonNull(mappings, "mappings");
 
+        int fromNs = mappings.getNamespaceId(from);
+        int toNs = mappings.getNamespaceId(to);
+
+        if (fromNs == MappingTreeView.NULL_NAMESPACE_ID) {
+            throw new IllegalArgumentException("Source namespace '" + from + "' is not present in the mapping tree");
+        } else if (toNs == MappingTreeView.NULL_NAMESPACE_ID) {
+            throw new IllegalArgumentException("Target namespace '" + to + "' is not present in the mapping tree");
+        }
+
         AccessTransformSet remapped = AccessTransformSet.create();
         set.getClasses().forEach((className, classSet) -> {
-            Optional<? extends ClassMapping<?, ?>> mapping = mappings.getClassMapping(className);
-            remap(mapping.orElse(null), classSet, remapped.getOrCreateClass(mapping.map(Mapping::getFullDeobfuscatedName).orElse(className)));
+            MappingTreeView.ClassMappingView mapping = mappings.getClass(className, fromNs);
+            String newClassName = mapping != null ? mapping.getName(toNs) : className;
+            remap(mappings, mapping, classSet, remapped.getOrCreateClass(newClassName), fromNs, toNs);
         });
         return remapped;
     }
 
-    private static void remap(ClassMapping<?, ?> mapping, AccessTransformSet.Class set, AccessTransformSet.Class remapped) {
+    private static void remap(MappingTreeView mappings, MappingTreeView.ClassMappingView mapping, AccessTransformSet.Class set, AccessTransformSet.Class remapped, int fromNs, int toNs) {
         remapped.merge(set.get());
         remapped.mergeAllFields(set.allFields());
         remapped.mergeAllMethods(set.allMethods());
@@ -64,8 +71,8 @@ final class AccessTransformSetMapper {
         } else {
             set.getFields().forEach((name, transform) ->
                 remapped.mergeField(
-                    mapping.getFieldMapping(name)
-                        .map(FieldMapping::getDeobfuscatedName)
+                    Optional.ofNullable(mapping.getField(name, null, fromNs))
+                        .flatMap(field -> Optional.ofNullable(field.getName(toNs)))
                         .orElse(name),
                     transform
                 )
@@ -73,11 +80,17 @@ final class AccessTransformSetMapper {
 
             set.getMethods().forEach((signature, transform) -> {
                 remapped.mergeMethod(
-                    mapping.getMethodMapping(signature)
-                        .map(MethodMapping::getDeobfuscatedSignature)
+                    Optional.ofNullable(mapping.getMethod(signature.getName(), signature.getDescriptor().toString(), fromNs))
+                        .map(method -> {
+                            String name = method.getName(toNs);
+                            if (name == null) name = signature.getName();
+
+                            String desc = method.getDesc(toNs);
+                            return MethodSignature.of(name, desc);
+                        })
                         .orElseGet(() -> new MethodSignature(
                             signature.getName(),
-                            mapping.getMappings().deobfuscate(signature.getDescriptor())
+                            MethodDescriptor.of(mappings.mapDesc(signature.getDescriptor().toString(), fromNs, toNs))
                         )),
                     transform
                 );

@@ -25,11 +25,11 @@
 
 package org.cadixdev.at;
 
+import net.fabricmc.mappingio.tree.MappingTreeView;
 import org.cadixdev.at.impl.AccessTransformSetImpl;
 import org.cadixdev.bombe.analysis.InheritanceCompletable;
 import org.cadixdev.bombe.analysis.InheritanceProvider;
 import org.cadixdev.bombe.type.signature.MethodSignature;
-import org.cadixdev.lorenz.MappingSet;
 
 import java.util.Map;
 import java.util.Optional;
@@ -41,7 +41,7 @@ public interface AccessTransformSet {
     Class getOrCreateClass(String name);
     Optional<Class> removeClass(String name);
 
-    AccessTransformSet remap(MappingSet mappings);
+    AccessTransformSet remap(MappingTreeView mappings, String from, String to);
     void merge(AccessTransformSet other);
 
     static AccessTransformSet create() {

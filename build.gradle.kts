@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     api("org.cadixdev:bombe:0.3.4")
-    compileOnly("org.cadixdev:lorenz:0.5.5")
+    api("net.fabricmc:mapping-io:0.4.2")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
