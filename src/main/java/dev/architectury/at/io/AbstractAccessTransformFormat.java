@@ -53,7 +53,13 @@ public abstract class AbstractAccessTransformFormat implements AccessTransformFo
         if (writer instanceof BufferedWriter) {
             write((BufferedWriter) writer, set);
         } else {
-            write(new BufferedWriter(writer), set);
+            BufferedWriter buffered = new BufferedWriter(writer);
+
+            try {
+                write(buffered, set);
+            } finally {
+                buffered.flush();
+            }
         }
     }
 
