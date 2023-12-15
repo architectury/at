@@ -23,23 +23,37 @@
  * THE SOFTWARE.
  */
 
-package org.cadixdev.at;
+package dev.architectury.at.io;
 
-public enum ModifierChange {
-    NONE,
-    REMOVE,
-    ADD;
+import dev.architectury.at.AccessTransformSet;
 
-    public ModifierChange merge(ModifierChange other) {
-        switch (other) {
-            case NONE:
-                return this;
-            case REMOVE:
-                return REMOVE;
-            case ADD:
-                return this == REMOVE ? REMOVE : ADD;
-            default:
-                throw new AssertionError(other);
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+
+public abstract class AbstractAccessTransformFormat implements AccessTransformFormat {
+
+    protected abstract void read(BufferedReader reader, AccessTransformSet set) throws IOException;
+
+    @Override
+    public void read(Reader reader, AccessTransformSet set) throws IOException {
+        if (reader instanceof BufferedReader) {
+            read((BufferedReader) reader, set);
+        } else {
+            read(new BufferedReader(reader), set);
+        }
+    }
+
+    protected abstract void write(BufferedWriter writer, AccessTransformSet set) throws IOException;
+
+    @Override
+    public void write(Writer writer, AccessTransformSet set) throws IOException {
+        if (writer instanceof BufferedWriter) {
+            write((BufferedWriter) writer, set);
+        } else {
+            write(new BufferedWriter(writer), set);
         }
     }
 

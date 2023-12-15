@@ -23,44 +23,25 @@
  * THE SOFTWARE.
  */
 
-package org.cadixdev.at;
+package dev.architectury.at.io.fml;
 
-import java.lang.reflect.Modifier;
+import dev.architectury.at.AccessTransformSet;
+import dev.architectury.at.io.AbstractAccessTransformFormat;
 
-public enum AccessChange {
-    NONE(-1),
-    PRIVATE(Modifier.PRIVATE),
-    PACKAGE_PRIVATE(0),
-    PROTECTED(Modifier.PROTECTED),
-    PUBLIC(Modifier.PUBLIC);
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
-    private final int modifier;
+public class FmlAccessTransformFormat extends AbstractAccessTransformFormat {
 
-    AccessChange(int modifier) {
-        this.modifier = modifier;
+    @Override
+    public void read(BufferedReader reader, AccessTransformSet set) throws IOException {
+        FmlReader.read(reader, set);
     }
 
-    public int getModifier() {
-        return modifier;
-    }
-
-    public AccessChange merge(AccessChange other) {
-        if (this == other) {
-            return this;
-        } else if (this == NONE) {
-            return other;
-        } else if (other == NONE) {
-            return this;
-        }
-
-        int compare = compareTo(other);
-        if (compare == 0) {
-            return this;
-        } else if (compare < 0) {
-            return other;
-        } else {
-            return this;
-        }
+    @Override
+    public void write(BufferedWriter writer, AccessTransformSet set) throws IOException {
+        new FmlWriter(writer).write(set);
     }
 
 }

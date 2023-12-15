@@ -23,32 +23,24 @@
  * THE SOFTWARE.
  */
 
-package org.cadixdev.at;
+package dev.architectury.at;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+public enum ModifierChange {
+    NONE,
+    REMOVE,
+    ADD;
 
-import org.cadixdev.bombe.analysis.InheritanceProvider;
-import org.cadixdev.bombe.analysis.ReflectionInheritanceProvider;
-import org.cadixdev.bombe.type.signature.MethodSignature;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-
-public class AccessTransformInheritanceTest {
-
-    private static final InheritanceProvider INHERITANCE = new ReflectionInheritanceProvider(AccessTransformInheritanceTest.class.getClassLoader());
-
-    @Test
-    public void testAtIfSuperClassWithoutAtMakesInheritableMethodNotVisibleEnough() throws IOException {
-        final MethodSignature helloWorld = MethodSignature.of("helloWorld()V");
-
-        AccessTransformSet ats = AccessTransformSet.create();
-        ats.getOrCreateClass("test.inheritance.a.BaseClass").mergeMethod(helloWorld, AccessTransform.PUBLIC);
-
-        AccessTransformSet.Class testClass = ats.getOrCreateClass("test.inheritance.TestClass");
-        testClass.complete(INHERITANCE);
-
-        assertEquals(testClass.getMethod(helloWorld), AccessTransform.PUBLIC);
+    public ModifierChange merge(ModifierChange other) {
+        switch (other) {
+            case NONE:
+                return this;
+            case REMOVE:
+                return REMOVE;
+            case ADD:
+                return this == REMOVE ? REMOVE : ADD;
+            default:
+                throw new AssertionError(other);
+        }
     }
 
 }

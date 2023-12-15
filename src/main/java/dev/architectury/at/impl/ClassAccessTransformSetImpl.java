@@ -23,10 +23,10 @@
  * THE SOFTWARE.
  */
 
-package org.cadixdev.at.impl;
+package dev.architectury.at.impl;
 
-import org.cadixdev.at.AccessTransform;
-import org.cadixdev.at.AccessTransformSet;
+import dev.architectury.at.AccessTransform;
+import dev.architectury.at.AccessTransformSet;
 import org.cadixdev.bombe.analysis.InheritanceProvider;
 import org.cadixdev.bombe.type.signature.MethodSignature;
 

@@ -23,37 +23,43 @@
  * THE SOFTWARE.
  */
 
-package org.cadixdev.at.io;
+package dev.architectury.at;
 
-import org.cadixdev.at.AccessTransformSet;
+import java.lang.reflect.Modifier;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+public enum AccessChange {
+    NONE(-1),
+    PRIVATE(Modifier.PRIVATE),
+    PACKAGE_PRIVATE(0),
+    PROTECTED(Modifier.PROTECTED),
+    PUBLIC(Modifier.PUBLIC);
 
-public abstract class AbstractAccessTransformFormat implements AccessTransformFormat {
+    private final int modifier;
 
-    protected abstract void read(BufferedReader reader, AccessTransformSet set) throws IOException;
-
-    @Override
-    public void read(Reader reader, AccessTransformSet set) throws IOException {
-        if (reader instanceof BufferedReader) {
-            read((BufferedReader) reader, set);
-        } else {
-            read(new BufferedReader(reader), set);
-        }
+    AccessChange(int modifier) {
+        this.modifier = modifier;
     }
 
-    protected abstract void write(BufferedWriter writer, AccessTransformSet set) throws IOException;
+    public int getModifier() {
+        return modifier;
+    }
 
-    @Override
-    public void write(Writer writer, AccessTransformSet set) throws IOException {
-        if (writer instanceof BufferedWriter) {
-            write((BufferedWriter) writer, set);
+    public AccessChange merge(AccessChange other) {
+        if (this == other) {
+            return this;
+        } else if (this == NONE) {
+            return other;
+        } else if (other == NONE) {
+            return this;
+        }
+
+        int compare = compareTo(other);
+        if (compare == 0) {
+            return this;
+        } else if (compare < 0) {
+            return other;
         } else {
-            write(new BufferedWriter(writer), set);
+            return this;
         }
     }
 

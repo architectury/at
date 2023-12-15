@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 
-package org.cadixdev.at;
+package dev.architectury.at;
 
 import java.util.Objects;
 import java.util.StringJoiner;

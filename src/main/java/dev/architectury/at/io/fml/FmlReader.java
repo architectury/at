@@ -23,12 +23,12 @@
  * THE SOFTWARE.
  */
 
-package org.cadixdev.at.io.fml;
+package dev.architectury.at.io.fml;
 
-import org.cadixdev.at.AccessChange;
-import org.cadixdev.at.AccessTransform;
-import org.cadixdev.at.AccessTransformSet;
-import org.cadixdev.at.ModifierChange;
+import dev.architectury.at.AccessChange;
+import dev.architectury.at.AccessTransform;
+import dev.architectury.at.AccessTransformSet;
+import dev.architectury.at.ModifierChange;
 import org.cadixdev.bombe.type.signature.MethodSignature;
 
 import java.io.BufferedReader;

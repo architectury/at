@@ -23,10 +23,10 @@
  * THE SOFTWARE.
  */
 
-package org.cadixdev.at;
+package dev.architectury.at;
 
+import dev.architectury.at.impl.AccessTransformSetImpl;
 import net.fabricmc.mappingio.tree.MappingTreeView;
-import org.cadixdev.at.impl.AccessTransformSetImpl;
 import org.cadixdev.bombe.analysis.InheritanceCompletable;
 import org.cadixdev.bombe.analysis.InheritanceProvider;
 import org.cadixdev.bombe.type.signature.MethodSignature;

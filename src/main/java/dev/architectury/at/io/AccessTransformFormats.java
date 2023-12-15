@@ -23,25 +23,15 @@
  * THE SOFTWARE.
  */
 
-package org.cadixdev.at.io.fml;
+package dev.architectury.at.io;
 
-import org.cadixdev.at.AccessTransformSet;
-import org.cadixdev.at.io.AbstractAccessTransformFormat;
+import dev.architectury.at.io.fml.FmlAccessTransformFormat;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
+public final class AccessTransformFormats {
 
-public class FmlAccessTransformFormat extends AbstractAccessTransformFormat {
+    public static AccessTransformFormat FML = new FmlAccessTransformFormat();
 
-    @Override
-    public void read(BufferedReader reader, AccessTransformSet set) throws IOException {
-        FmlReader.read(reader, set);
-    }
-
-    @Override
-    public void write(BufferedWriter writer, AccessTransformSet set) throws IOException {
-        new FmlWriter(writer).write(set);
+    private AccessTransformFormats() {
     }
 
 }

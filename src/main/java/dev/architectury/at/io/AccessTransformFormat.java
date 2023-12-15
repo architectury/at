@@ -23,9 +23,9 @@
  * THE SOFTWARE.
  */
 
-package org.cadixdev.at.io;
+package dev.architectury.at.io;
 
-import org.cadixdev.at.AccessTransformSet;
+import dev.architectury.at.AccessTransformSet;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

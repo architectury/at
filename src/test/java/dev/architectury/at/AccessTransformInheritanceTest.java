@@ -23,15 +23,32 @@
  * THE SOFTWARE.
  */
 
-package org.cadixdev.at.io;
+package dev.architectury.at;
 
-import org.cadixdev.at.io.fml.FmlAccessTransformFormat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public final class AccessTransformFormats {
+import org.cadixdev.bombe.analysis.InheritanceProvider;
+import org.cadixdev.bombe.analysis.ReflectionInheritanceProvider;
+import org.cadixdev.bombe.type.signature.MethodSignature;
+import org.junit.jupiter.api.Test;
 
-    public static AccessTransformFormat FML = new FmlAccessTransformFormat();
+import java.io.IOException;
 
-    private AccessTransformFormats() {
+public class AccessTransformInheritanceTest {
+
+    private static final InheritanceProvider INHERITANCE = new ReflectionInheritanceProvider(AccessTransformInheritanceTest.class.getClassLoader());
+
+    @Test
+    public void testAtIfSuperClassWithoutAtMakesInheritableMethodNotVisibleEnough() throws IOException {
+        final MethodSignature helloWorld = MethodSignature.of("helloWorld()V");
+
+        AccessTransformSet ats = AccessTransformSet.create();
+        ats.getOrCreateClass("test.inheritance.a.BaseClass").mergeMethod(helloWorld, AccessTransform.PUBLIC);
+
+        AccessTransformSet.Class testClass = ats.getOrCreateClass("test.inheritance.TestClass");
+        testClass.complete(INHERITANCE);
+
+        assertEquals(testClass.getMethod(helloWorld), AccessTransform.PUBLIC);
     }
 
 }

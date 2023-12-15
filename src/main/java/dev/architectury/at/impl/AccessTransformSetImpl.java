@@ -23,10 +23,10 @@
  * THE SOFTWARE.
  */
 
-package org.cadixdev.at.impl;
+package dev.architectury.at.impl;
 
+import dev.architectury.at.AccessTransformSet;
 import net.fabricmc.mappingio.tree.MappingTreeView;
-import org.cadixdev.at.AccessTransformSet;
 
 import java.util.Collections;
 import java.util.HashMap;
