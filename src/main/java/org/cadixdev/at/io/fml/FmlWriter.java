@@ -77,6 +77,10 @@ final class FmlWriter {
     private void writeAccessTransform(String className, AccessTransform transform) throws IOException {
         if (transform.getAccess() != AccessChange.NONE) {
             this.writer.write(getAccessModifier(transform.getAccess()));
+        } else {
+            // FML is not compatible with bare finality changes.
+            // See https://github.com/CadixDev/at/issues/8.
+            throw new IllegalArgumentException("No access change provided for class " + className);
         }
 
         switch (transform.getFinal()) {
