@@ -46,4 +46,16 @@ publishing {
             from(components["java"])
         }
     }
+
+    repositories {
+        if (System.getenv("MAVEN_PASS") != null) {
+            maven {
+                setUrl("https://deploy.shedaniel.me/")
+                credentials {
+                    username = "shedaniel"
+                    password = System.getenv("MAVEN_PASS")
+                }
+            }
+        }
+    }
 }
