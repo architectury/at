@@ -12,7 +12,6 @@ logger.lifecycle(":building at v${version}")
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     withSourcesJar()
-    withJavadocJar()
 }
 
 repositories {
