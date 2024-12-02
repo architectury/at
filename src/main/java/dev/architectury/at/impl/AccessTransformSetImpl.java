@@ -29,14 +29,14 @@ import dev.architectury.at.AccessTransformSet;
 import net.fabricmc.mappingio.tree.MappingTreeView;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 public class AccessTransformSetImpl implements AccessTransformSet {
 
-    private final Map<String, Class> classes = new HashMap<>();
+    private final Map<String, Class> classes = new LinkedHashMap<>();
 
     @Override
     public Map<String, Class> getClasses() {

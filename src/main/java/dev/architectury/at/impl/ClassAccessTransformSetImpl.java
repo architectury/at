@@ -31,7 +31,7 @@ import org.cadixdev.bombe.analysis.InheritanceProvider;
 import org.cadixdev.bombe.type.signature.MethodSignature;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -45,8 +45,8 @@ class ClassAccessTransformSetImpl implements AccessTransformSet.Class {
     private AccessTransform allFields = AccessTransform.EMPTY;
     private AccessTransform allMethods = AccessTransform.EMPTY;
 
-    private final Map<String, AccessTransform> fields = new HashMap<>();
-    private final Map<MethodSignature, AccessTransform> methods = new HashMap<>();
+    private final Map<String, AccessTransform> fields = new LinkedHashMap<>();
+    private final Map<MethodSignature, AccessTransform> methods = new LinkedHashMap<>();
 
     private boolean complete;
 
